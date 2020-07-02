@@ -1,0 +1,18 @@
+function BindCountry() {
+    $.ajax({
+        url: 'Employee.asmx/Country',
+        type: 'post',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: "{}",
+        success: function (data) {
+            data = JSON.parse(data.d);
+            for (var i = 0; i < data.length; i++) {
+                $("#ddlcountry").append($('<option/>').attr("value", data[i].cid).text(data[i].cname));
+            }
+        },
+        error: function () {
+            alert('Country not found');
+        }
+    });
+}

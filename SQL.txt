@@ -1,0 +1,68 @@
+create database Question3
+use Question3
+
+create table Emp
+(
+   id int primary key identity,
+   name varchar(50),
+   country varchar(50),
+   inserted_date date,
+   status int default 0
+)
+
+create table Country
+(
+   cid int primary key identity,
+   cname varchar(50)
+)
+insert into Country(cname)values('IND'),('PAK'),('USA')
+
+select *From Country
+
+alter proc usp_Emp
+@action varchar(50)=null,
+@id int=0,
+@name varchar(50)=null,
+@country varchar(50)=null
+as
+begin
+       if(@action='insert')
+	   begin
+	         insert into Emp(name, country, inserted_date)values(@name, @country, GETDATE())
+	   end
+
+       else if(@action='bindcountry')
+	   begin
+	         select *from Country
+	   end
+
+       else if(@action='show')
+	   begin
+	         select *from Emp where status=0
+	   end
+
+       else if(@action='join')
+	   begin
+	         select *,CONVERT(varchar(50), inserted_date, 106)idate from Emp 
+			 inner join Country on Emp.country = Country.cid where status=0
+	   end
+
+       else if(@action='delete')
+	   begin
+	         update Emp set status=1 where id=@id
+	   end
+
+
+       else if(@action='edit')
+	   begin
+	         select *from Emp where id=@id
+	   end
+
+       else if(@action='update')
+	   begin
+	         update Emp set name=@name, country=@country where id=@id
+	   end
+
+end
+
+select *from Emp
