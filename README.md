@@ -1,2 +1,0 @@
-# jQuerys
-All classis
